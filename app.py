@@ -12,6 +12,28 @@ from PIL import Image
 from datetime import datetime, date
 import plotly.graph_objects as go
 import plotly.express as px
+# ── CLOUD COMPATIBILITY ──
+import os
+import warnings
+warnings.filterwarnings("ignore")
+
+# Create needed directories
+for d in ["history", "models",
+          "reports", "smart_features"]:
+    os.makedirs(d, exist_ok=True)
+
+# Create empty history files
+import json
+for f, default in [
+    ("history/patients.json",     []),
+    ("history/appointments.json", []),
+    ("history/audit_log.json",    []),
+    ("history/prediction_history.json", []),
+    ("history/emergency_alerts.json",   []),
+]:
+    if not os.path.exists(f):
+        with open(f, "w") as fp:
+            json.dump(default, fp)
 import warnings
 warnings.filterwarnings("ignore")
 sys.path.append("member1")
