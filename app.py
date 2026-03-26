@@ -579,47 +579,64 @@ def login_page():
 # ─────────────────────────────────────────
 @st.cache_resource
 def load_all_models():
-    import joblib
-    import tensorflow as tf
     models = {}
 
+    # Try TensorFlow
     try:
-        models["svm"]    = joblib.load(
+        os.environ[
+            "TF_CPP_MIN_LOG_LEVEL"
+        ] = "3"
+        import tensorflow as tf
+        tf.get_logger().setLevel("ERROR")
+
+        if os.path.exists(
+            "models/cnn_model.h5"
+        ):
+            models["cnn"] = \
+                tf.keras.models\
+                .load_model(
+                    "models/cnn_model.h5"
+                )
+    except Exception as e:
+        pass  # TF not available on cloud
+
+    # Try ML models
+    try:
+        import joblib
+        if os.path.exists(
             "models/svm_model.pkl"
-        )
-        models["scaler"] = joblib.load(
+        ):
+            models["svm"] = joblib.load(
+                "models/svm_model.pkl"
+            )
+        if os.path.exists(
             "models/svm_scaler.pkl"
-        )
-        models["pca"]    = joblib.load(
+        ):
+            models["scaler"] = joblib.load(
+                "models/svm_scaler.pkl"
+            )
+        if os.path.exists(
             "models/svm_pca.pkl"
-        )
-        models["le"]     = joblib.load(
-            "models/label_encoder.pkl"
-        )
-        models["rf"]     = joblib.load(
+        ):
+            models["pca"] = joblib.load(
+                "models/svm_pca.pkl"
+            )
+        if os.path.exists(
             "models/rf_model.pkl"
-        )
-    except Exception as e:
-        st.sidebar.warning(f"ML: {e}")
-
-    try:
-        models["cnn"] = \
-            tf.keras.models.load_model(
-                "models/cnn_model.h5"
+        ):
+            models["rf"] = joblib.load(
+                "models/rf_model.pkl"
+            )
+        if os.path.exists(
+            "models/label_encoder.pkl"
+        ):
+            models["le"] = joblib.load(
+                "models/label_encoder.pkl"
             )
     except Exception as e:
-        st.sidebar.warning(f"CNN: {e}")
-
-    try:
-        models["resnet"] = \
-            tf.keras.models.load_model(
-                "models/transfer_ResNet50.h5"
-            )
-    except Exception as e:
-        st.sidebar.warning(f"ResNet: {e}")
+        pass
 
     return models
-
 # ─────────────────────────────────────────
 # IMAGE PROCESSING
 # ─────────────────────────────────────────
