@@ -1,6 +1,3 @@
-# NeuroDetect - app.py
-# Complete Professional Medical UI Redesign
-# Hospital Grade System v3.0
 import streamlit as st
 import numpy as np
 import cv2
