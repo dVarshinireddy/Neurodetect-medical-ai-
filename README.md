@@ -73,7 +73,7 @@ using an ensemble of 6 AI models with
 - Source: Kaggle Brain Tumor MRI
 - Images: 7,023 MRI scans
 - Classes: Glioma, Meningioma,
-           Pituitary, No Tumor
+           Pituitary, No Tumor, Craniopharyngioma, Metastatic
 
 ## 🚀 Run Locally
 ```bash
